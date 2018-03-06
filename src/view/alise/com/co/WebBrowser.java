@@ -115,15 +115,14 @@ public class WebBrowser {
             String hash = "";
             try {
                 hash = PasswordSecurity.createHash(pwd);
-            } catch (NoSuchAlgorithmException ex) {
-            } catch (InvalidKeySpecException ex) {
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
             }
             System.out.println("Encriptado:" + hash);
             return hash;
         }
 
         /**
-         *
+         *Ejecuta Back Up en la cuenta de SharePoint.
          */
         public void backup() {
             // Ejecuta Back Up haciendo referencia al botón de PHP
@@ -157,7 +156,7 @@ public class WebBrowser {
         }
 
         /**
-         * Obtener el texto ingresado por el usuario
+         * Obtener el texto ingresado por el usuario en el campo de Servicio.
          */
         public void getText() {
             // Obtener el texto ingresado por el usuario
@@ -167,8 +166,10 @@ public class WebBrowser {
             //RegistrarServicio.registerService("juanrame", text);
         }
 
+        /**
+         * Ejecutar Limpieza de Equipo.
+         */
         public void clean() {
-            // Ejecuta limpieza haciendo referencia al botón de PHP.
             System.out.println("Entra");
             LimpiezaEquipo le = new LimpiezaEquipo();
 //            RegistrarServicio.registerService("juanrame", "Se ha realizado mantenimiento en el equipo: " + System.getenv("computername"));
@@ -177,7 +178,7 @@ public class WebBrowser {
 
         /**
          * Inicia la conversacion llamando al metodo submit, en este caso el
-         * submit trae el id de la conversación
+         * submit trae el id de la conversación.
          */
         public void initConversation() {
             System.out.println("Conversacion: " + conversation);
@@ -186,7 +187,7 @@ public class WebBrowser {
         }
 
         /**
-         * Valida que el chat tenga una id de conversacion asociado
+         * Valida que el chat tenga una id de conversacion asociado.
          */
         public void validateConversation() {
             JSObject window = (JSObject) myBrowser.getWebEngine().executeScript("window");
@@ -213,9 +214,7 @@ public class WebBrowser {
             System.out.println("Pass: " + password + " Encriptada: " + Encrypted);
             try {
                 isLogged = PasswordSecurity.validatePassword(password, Encrypted);
-            } catch (NoSuchAlgorithmException ex) {
-                isLogged = false;
-            } catch (InvalidKeySpecException ex) {
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
                 isLogged = false;
             }
 
@@ -252,7 +251,7 @@ public class WebBrowser {
         }
 
         /**
-         * Valida que se haya ingresado al formulario de manera adecuada
+         * Valida que se haya ingresado al formulario de manera adecuada.
          */
         public void validateEntrance() {
             if (!validEntrance) {
@@ -271,11 +270,9 @@ public class WebBrowser {
 
     /**
      * Evento principal de WebView, inicializa todos los componentes y muestra
-     * el explorador
+     * el explorador.
      */
     private void initAndShowGUI() {
-        // This method is invoked on the EDT thread
-        //Instacia del Frame principal
         bridge = new JavaApp();
         isActive = true;
         frame = new JFrame("Alise");
@@ -305,12 +302,9 @@ public class WebBrowser {
         Shape forma = new RoundRectangle2D.Double(0, 0, frame.getBounds().width, frame.getBounds().height, 30, 30);
         AWTUtilities.setWindowShape(frame, forma);
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                //Inicializar Panel FX
-                initFX(fxPanel);
-            }
+        Platform.runLater(() -> {
+            //Inicializar Panel FX
+            initFX(fxPanel);
         });
     }
 
@@ -333,10 +327,10 @@ public class WebBrowser {
      */
     private class MyBrowser extends Region {
 
-        private HBox toolbar;
-        private VBox toolbox;
+        private final HBox toolbar;
+        private final VBox toolbox;
 
-        private WebView webView = new WebView();
+        private final WebView webView = new WebView();
         private WebEngine webEngine = webView.getEngine();
 
         JavaApp bridge = new JavaApp();
@@ -370,7 +364,7 @@ public class WebBrowser {
         }
 
         /**
-         * Constructor de clase
+         * Constructor de clase.
          */
         public MyBrowser() {
             //URL Inicial del explorador
